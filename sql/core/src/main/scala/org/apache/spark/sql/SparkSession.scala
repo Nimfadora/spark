@@ -234,6 +234,9 @@ class SparkSession private(
   @Unstable
   def streams: StreamingQueryManager = sessionState.streamingQueryManager
 
+  sparkContext.ui.foreach(ui =>
+    ui.setStreamingQueryListener(new StructuredStreamingJobListener(SparkSession.this)))
+
   /**
    * Start a new session with isolated SQL configurations, temporary tables, registered
    * functions are isolated, but sharing the underlying `SparkContext` and cached data.
